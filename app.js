@@ -1,17 +1,31 @@
 const http = require('http');
-const port=process.env.PORT || 3000
-const server = http.createServer((req, res) => {
+var express = require('express');
+var app = express();
+var mysql = require('mysql');
+var bodyParser = require('body-parser')
 
-    res.statusCode = 200;
+app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.static(__dirname + "/public"));
 
-    res.setHeader('Content-Type', 'text/html');
+app.get("/", function(req, res){
+      res.render("home");
+    });
 
-    res.end('<h1>Hello World</h1>');
 
-});
+// const port=process.env.PORT || 3000
+// const server = http.createServer((req, res) => {
 
-server.listen(port,() => {
+//     res.statusCode = 200;
 
-    console.log(`Server running at port `+port);
+//     res.setHeader('Content-Type', 'text/html');
 
-});
+//     res.end('<h1>Hello World</h1>');
+
+// });
+
+// server.listen(port,() => {
+
+//     console.log(`Server running at port `+port);
+
+// });
