@@ -7,11 +7,13 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static(__dirname + "/public"));
 
-app.get("/", function(req, res){
-
-    res.render("home");
+const http = require('http');
+const port=process.env.PORT || 3000
+const server = http.createServer((req, res) => {
+res.statusCode = 200;
+res.setHeader('Content-Type', 'text/html');
+res.end('<h1>Hello World</h1>');
 });
-
-app.listen(8080, function () {
-    console.log('App listening on port 8080!');
+server.listen(port,() => {
+console.log(`Server running at port `+port);
 });
