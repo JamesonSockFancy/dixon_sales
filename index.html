@@ -1,11 +1,54 @@
 <!-- <link rel="stylesheet" href="/app.css"> -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script>
+function sales(){
+    let orders; 
+request(getOrders)
+ .then(ordersResponse => {
+  var orders = JSON.parse(ordersResponse)
+  orders.result.forEach((order)=> {
+    // console.log(order.id);
+    if (order.fulfillmentStatus == 'FULFILLED') {
+      // console.log(order.fulfillmentStatus);
+      var sale = {
+        "employeeID": 15,
+        "registerID": 2,
+        "shopID": 1,
+        "customerID": Math.floor(Math.random() * 10000),
+        "completed": true,
+        "SaleLines": {
+            "SaleLine": [
+            {
+                "itemID": order.lineItems[0].sku,
+                "unitQuantity": order.lineItems[0].quantity
+            },
+            ]
+        },
+        "SalePayments": {
+          "SalePayment": {
+            "amount": order.grandTotal.value,
+            "paymentTypeID": 3
+          }
+        }
+      }
+    }
+
+    console.log(sale);
+    
+  })
+
+
+ });
+
+}    
+
+</script>
 
 <div class="flex-container">
     <div class="container">
         <h1>DIXON RYE SALES AUTOMATION</h1>
 <h2>Hit the button below to see recent sales.</h2>
-<button type="button" class="btn btn-primary">Primary</button>
+<button type="button" class="btn btn-primary" onclick="sales()">Sales</button>
 
     </div>
 </div>
