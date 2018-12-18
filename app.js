@@ -4,6 +4,7 @@ const path = require('path');
 var request = require('request-promise');
 var qs = require('qs');
 var parseString = require('xml2js').parseString;
+const fs = require('fs');
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
