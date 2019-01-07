@@ -8,8 +8,8 @@ const adminData = require('./admin')
 
 
 router.get('/', (req, res, next) => {
-    const products = adminData.products;
-    res.render('shop', {prods: products});
+    const sales = adminData.sales;
+    res.render('shop', {sales});
 });
 
 module.exports = router;
