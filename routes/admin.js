@@ -16,5 +16,6 @@ router.get('/add-product', (req, res, next) => {
 
 router.post('/add-product', adminController.postGetProducts);
 
-exports.routes = router;
-exports.sales = sales;
+router.post('/delete-sales', adminController.deleteFileContents);
+
+module.exports = router;

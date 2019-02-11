@@ -1,7 +1,16 @@
 var request = require('request-promise');
 var qs = require('qs');
 var parseString = require('xml2js').parseString;
-const sales = []
+const fs = require('fs');
+const path = require('path');
+
+let sales = [];
+
+const p = path.join(
+  path.dirname(process.mainModule.filename),
+  'data',
+  'sales.json'
+);
 
 var getOrders = {
   
@@ -39,7 +48,7 @@ var getOrders = {
       request(getOrders)
        .then(ordersResponse => {
         var orders = JSON.parse(ordersResponse)
-        orders.result.forEach((order)=> {
+        orders.result.forEach((order) => {
           if (order.fulfillmentStatus == 'FULFILLED') {
             sales.push({
                 "employeeID": 15,
@@ -61,10 +70,16 @@ var getOrders = {
                     "paymentTypeID": 3
                   }
                 }
-              })    
+              })
           }
         })
        }
-       ).then(res.redirect('/'));    
-       
+       )
+       .then(fs.writeFile(p, JSON.stringify(sales), err => {}))
+      //  .then(res.redirect('/'));                   
 };
+
+exports.deleteFileContents = (req, res, next) => {
+  sales = [];
+  fs.writeFile(p, '', err => {});
+}
