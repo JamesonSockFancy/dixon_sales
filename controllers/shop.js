@@ -14,6 +14,13 @@ exports.getProducts = (req, res, next) => {
   }) 
  };
 
+ exports.postSale = (req, res, next) => {
+  // console.log(req.body.customerId)
+  const customerID = req.body.customerId;
+  Sales.getSaleById(customerID)
+  res.redirect('/');
+}
+
  // exports.getProducts = (req, res, next) => {
 //     Sales.fetchAll(sales => {
 //       res.render('/', {

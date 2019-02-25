@@ -39,7 +39,10 @@
                             </p>
                         </div>
                         <div class="card__actions">
-                            <a href="" class="btn">Send</a>
+                            <form action="/send-sale" method="POST">
+                                <input type="hidden" value="<%= sales.indexOf(sale) %>" name="customerId">
+                                <button class="btn" type="submit">Send</button>
+                            </form>
                         </div>
                     </article>
                     <% } %>

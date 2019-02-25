@@ -34,4 +34,14 @@ const p = path.join(
     getSalesFromFile(cb);
   }
 
+  static getSaleById(customerID, cb) {
+    getSalesFromFile(sales => {
+      console.log(customerID)
+      const sale = sales[customerID];
+      
+      // console.log(sale);
+      // // cb(sale);
+    })
+  }
+
 }

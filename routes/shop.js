@@ -9,4 +9,7 @@ const shopController = require('../controllers/shop')
 
 router.get('/', shopController.getProducts);
 
+router.post('/send-sale', shopController.postSale);
+
+
 module.exports = router;

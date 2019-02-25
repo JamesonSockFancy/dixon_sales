@@ -83,3 +83,4 @@ exports.deleteFileContents = (req, res, next) => {
   sales = [];
   fs.writeFile(p, '', err => {});
 }
+
