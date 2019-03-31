@@ -18,4 +18,10 @@ router.post('/add-product', adminController.postGetProducts);
 
 router.post('/delete-sales', adminController.deleteFileContents);
 
+router.post('/inventory', adminController.getInventory);
+
+router.get('/inventory', adminController.getInventoryPage);
+
+
+
 module.exports = router;

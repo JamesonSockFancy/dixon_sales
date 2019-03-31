@@ -1,8 +1,10 @@
 var request = require('request-promise');
 var qs = require('qs');
-var parseString = require('xml2js').parseString;
 const fs = require('fs');
 const path = require('path');
+const download = require('download-csv')
+var jsonToCSV = require('json2csv').parse;
+
 
 let sales = [];
 
@@ -48,26 +50,27 @@ var getOrders = {
       request(getOrders)
        .then(ordersResponse => {
         var orders = JSON.parse(ordersResponse)
+        console.log(orders.shippingLines)
         orders.result.forEach((order) => {
           if (order.fulfillmentStatus == 'FULFILLED') {
             sales.push({
                 "employeeID": 15,
-                "registerID": 2,
+                "registerID": 1,
                 "shopID": 1,
-                "customerID": Math.floor(Math.random() * 10000),
-                "completed": true,
+                "customerID": 2370,
+                "completed": false,
                 "SaleLines": {
                     "SaleLine": [
                     {
                         "itemID": order.lineItems[0].sku,
                         "unitQuantity": order.lineItems[0].quantity
-                    },
+                    }
                     ]
                 },
                 "SalePayments": {
                   "SalePayment": {
                     "amount": order.grandTotal.value,
-                    "paymentTypeID": 3
+                    "paymentTypeID": 10
                   }
                 }
               })
@@ -81,6 +84,47 @@ var getOrders = {
 
 exports.deleteFileContents = (req, res, next) => {
   sales = [];
-  fs.writeFile(p, '', err => {});
+  fs.writeFile(p, '[]', err => {});
+}
+
+exports.getInventoryPage = (req, res, next) => {
+  res.render('inventory', {
+    pageTitle: 'inventory',
+    path: '/inventory'
+  });
+}
+
+exports.getInventory = (req, res, next) => {
+let authToken; 
+const offset = req.body.offset
+const offsetString = offset.toString();
+console.log(offset)
+request(getAuth)
+ .then(authResponse => {
+  var authData = JSON.parse(authResponse)
+  authToken = authData.access_token
+  console.log(authToken);
+ })
+ .then(getNewItems => {
+  request({
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer ' + authToken
+    },
+    url: 'https://api.lightspeedapp.com/API/Account/117289/Item.json?load_relations=["ItemShops"]&offset=' + offsetString
+  })
+  .then(getNewItemsResponse => {
+    var newItems = JSON.parse(getNewItemsResponse)
+    var newItemsArray = newItems.Item
+    csv = jsonToCSV(newItemsArray)
+    fs.writeFile('items.csv', csv, function(err) {
+      if (err) throw err;
+      console.log('Saved')
+    })
+    res.setHeader('Content-disposition', 'attachment; filename=items.csv');
+    res.set('Content-Type', 'text/csv');
+    res.status(200).send(csv);
+    })
+ })
 }
 
