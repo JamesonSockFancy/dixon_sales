@@ -4,6 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const download = require('download-csv')
 var jsonToCSV = require('json2csv').parse;
+const json2csv = require('json2csv');
+const Product = require('../models/product');
+const fast_csv = require('fast-csv');
 
 
 let sales = [];
@@ -159,5 +162,41 @@ exports.getInventoryByDate = (req, res, next) => {
       })
 
    })
+  }
+
+  exports.uploadProducts = (req, res, next) => {
+    fs.createReadStream("csv/2019-04-21T05:04:10.356Z-products.csv")  
+    .pipe(fast_csv())
+    .on('data', (row) => {
+      const product = new Product({
+        title: row[2],
+        sku: row[9],
+        quantity: row[23]
+      })
+      product.save()
+      .then(result => {
+        console.log('done')
+      }).catch(err => {
+        console.log(err)
+      })
+    })
+    .on('end', () => {
+      console.log('CSV file successfully processed');
+    });
+    res.redirect('/inventory')
+
+
+    // const stream = fs.createReadStream(ssProducts);
+ 
+    // const csvStream = csv()
+    //   .on("data", function(data){
+    //       console.log(data);
+    //   })
+    //   .on("end", function(){
+    //       console.log("done");
+    //   });
+ 
+    // stream.pipe(csvStream);
+
   }
 

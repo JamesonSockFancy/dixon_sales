@@ -24,6 +24,9 @@ router.get('/inventory', adminController.getInventoryPage);
 
 router.post('/inventoryDate', adminController.getInventoryByDate);
 
+router.post('/csv-upload', adminController.uploadProducts);
+
+
 
 
 module.exports = router;
