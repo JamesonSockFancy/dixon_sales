@@ -128,3 +128,36 @@ request(getAuth)
  })
 }
 
+exports.getInventoryByDate = (req, res, next) => {
+  let authToken; 
+  request(getAuth)
+   .then(authResponse => {
+    var authData = JSON.parse(authResponse)
+    authToken = authData.access_token
+    console.log(authToken);
+   })
+   .then(getNewItems => {
+    request({
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + authToken
+      },
+      url: 'https://api.lightspeedapp.com/API/Account/117289/Item.json?load_relations=["ItemShops"]&orderby=createTime&orderby_desc=1'
+    })
+    .then(getNewItemsResponse => {
+      var newItems = JSON.parse(getNewItemsResponse)
+      var newItemsArray = newItems.Item
+      csv = jsonToCSV(newItemsArray)
+      fs.writeFile('items.csv', csv, function(err) {
+        if (err) throw err;
+        console.log('Saved')
+      })
+      res.setHeader('Content-disposition', 'attachment; filename=items.csv');
+      res.set('Content-Type', 'text/csv');
+      res.status(200).send(csv);
+      res.redirect('/inventory')
+      })
+
+   })
+  }
+

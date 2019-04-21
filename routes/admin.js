@@ -22,6 +22,8 @@ router.post('/inventory', adminController.getInventory);
 
 router.get('/inventory', adminController.getInventoryPage);
 
+router.post('/inventoryDate', adminController.getInventoryByDate);
+
 
 
 module.exports = router;
