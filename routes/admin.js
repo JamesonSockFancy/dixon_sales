@@ -26,6 +26,10 @@ router.post('/inventoryDate', adminController.getInventoryByDate);
 
 router.post('/csv-upload', adminController.uploadProducts);
 
+router.post('/compare', adminController.compareInventory)
+
+router.get('/compare')
+
 
 
 
