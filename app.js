@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const errorController = require('./controllers/error');
 
 const MONGODB_URI =
-  'mongodb+srv://dbUser:Tanner59!@cluster0-kosy2.mongodb.net/test?retryWrites=true';
+  'mongodb+srv://jdhaas_test:tanner59@learning-djuec.mongodb.net/dixonShop?retryWrites=true';
 
 const app = express();
 
