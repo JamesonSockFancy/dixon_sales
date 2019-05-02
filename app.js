@@ -13,7 +13,7 @@ const app = express();
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'csv');
+    cb(null, './csv');
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
