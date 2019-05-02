@@ -3,12 +3,11 @@ const bodyParser = require('body-parser')
 const path = require('path');
 const multer = require('multer');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv').config();
 
 
 const errorController = require('./controllers/error');
 
-const MONGODB_URI =
-  'mongodb+srv://jdhaas_test:tanner59@learning-djuec.mongodb.net/dixonShop?retryWrites=true';
 
 const app = express();
 
@@ -42,7 +41,7 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(process.env.MONGODB_URI)
   .then(result => {
     app.listen(process.env.PORT || 4000, function(){
       console.log('Your node js server is running');
